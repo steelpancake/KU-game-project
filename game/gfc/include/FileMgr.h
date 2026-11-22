@@ -57,7 +57,7 @@ public:
 
 	~CFileMgr()
 	{
-		for each (std::pair<std::string, T*> p in m_cache)
+		for (std::pair<std::string, T*> p : m_cache)
 			m_deleteHandler(p.second);
 	}
 

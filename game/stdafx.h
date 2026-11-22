@@ -12,8 +12,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#define max(x, y)	((x) > (y) ? (x) : (y))
-#define min(x, y)	((x) < (y) ? (x) : (y))
+#define mmax(x, y)	((x) > (y) ? (x) : (y))
+#define mmin(x, y)	((x) < (y) ? (x) : (y))
 
 #include "GFC.h"
 using namespace std;

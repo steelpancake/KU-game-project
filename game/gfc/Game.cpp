@@ -94,7 +94,8 @@ void CGame::ForceDraw()
 {
 	auto pApp = GetApp();
 	auto pGraphics = pApp->GetGraphics();
-	pGraphics->Clear(pApp->GetClearColor());
+	CColor c = pApp->GetClearColor();
+	pGraphics->Clear(c);
 	OnDraw(pGraphics);
 	pGraphics->Flush();
 	pGraphics->Flip();

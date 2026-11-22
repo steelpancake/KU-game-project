@@ -40,7 +40,7 @@ public:
 	PROPERTY(const char *p)		{ type = STR; str = p; pIm = NULL; }
 	PROPERTY(CGraphics *p)		{ type = IMG; pIm = new CGraphics(*p); }
 
-	void Erase()				{ if (pIm) delete pIm; for each (PROPERTY prop in m_indexedProperties) prop.Erase(); }
+	void Erase()				{ if (pIm) delete pIm; for (PROPERTY prop : m_indexedProperties) prop.Erase(); }
 	void CopyFrom(PROPERTY &p)				
 	{
 		//if (pIm) delete pIm; pIm = NULL;
