@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 project(pathfinder VERSION 0.0.1 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(pathfinder
     game/main.cpp
@@ -38,3 +40,5 @@ target_link_libraries(pathfinder PRIVATE
     SDL_ttf
 )
 
+target_compile_options(pathfinder PRIVATE
+-fpermissive)
