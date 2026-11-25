@@ -162,6 +162,12 @@ target_include_directories(sdl_image PUBLIC ${SDLIMAGE_DIR}
   ${SDL_DIR}/include/SDL/
 )
 
+target_compile_definitions(sdl_image PRIVATE LOAD_PNG)
+target_compile_options(sdl_image PRIVATE -Wno-incompatible-pointer-types)
+target_link_directories(sdl_image PRIVATE /usr/x86_64-w64-mingw32/lib)
+target_link_libraries(sdl_image PRIVATE png z SDL)
+target_include_directories(sdl_image PRIVATE /usr/x86_64-w64-mingw32/include)
+
 target_link_directories(sdl_image PRIVATE ${SDL_DIR}/lib)
 target_link_libraries(sdl_image PRIVATE SDL)
 
@@ -203,6 +209,14 @@ target_include_directories(sdl_mixer PUBLIC ${SDLMIXER_DIR}
 target_link_directories(sdl_mixer PRIVATE ${SDL_DIR}/lib)
 target_link_libraries(sdl_mixer PRIVATE SDL)
 
+set(MINGW_BIN /usr/x86_64-w64-mingw32/bin)
+
+add_custom_command(TARGET pathfinder POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${MINGW_BIN}/libpng16-16.dll
+    ${MINGW_BIN}/libssp-0.dll
+    ${MINGW_BIN}/zlib1.dll
+    $<TARGET_FILE_DIR:pathfinder>)
 
 add_custom_command(TARGET pathfinder POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
