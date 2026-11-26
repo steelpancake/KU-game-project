@@ -1,6 +1,0 @@
-[submodule "freetype"]
-	path = freetype
-	url = ./freetype
-[submodule "SDL-1.2"]
-	path = SDL-1.2
-	url = ./SDL-1.2
