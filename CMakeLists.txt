@@ -71,15 +71,32 @@ target_compile_options(pathfinder PRIVATE
 # SDL
 #
 
-set(SDL_DIR ${CMAKE_SOURCE_DIR}/SDL_mingw)
+if(WIN32)
+  set(SDL_DIR ${CMAKE_SOURCE_DIR}/SDL_mingw)
+  set(SDL_INCLUDE_DIR ${SDL_DIR}/include/SDL)
+  
+  target_include_directories(gfc PUBLIC ${SDL_INCLUDE_DIR}/)
+  target_link_directories(gfc PUBLIC ${SDL_DIR}/lib)
+  
+  add_custom_command(TARGET pathfinder POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      ${SDL_DIR}/bin/SDL.dll
+              $<TARGET_FILE_DIR:pathfinder>)
+else()
+  #set(SDL_DIR ${CMAKE_SOURCE_DIR}/SDL-1.2)
+  #set(SDL_INCLUDE_DIR ${SDL_DIR}/include)
 
-target_include_directories(gfc PUBLIC ${SDL_DIR}/include/SDL)
-target_link_directories(gfc PUBLIC ${SDL_DIR}/lib)
 
-add_custom_command(TARGET pathfinder POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${SDL_DIR}/bin/SDL.dll
-            $<TARGET_FILE_DIR:pathfinder>)
+  find_path(SDL_INCLUDE_DIR
+    NAMES SDL.h PATH_SUFFIXES SDL REQUIRED
+  )
+
+  find_library(SDL_LIBRARY
+    NAMES SDL-1.2 REQUIRED
+  )
+  
+  target_include_directories(gfc PUBLIC ${SDL_INCLUDE_DIR})
+endif()
 
 #
 # FreeType (built from source)
@@ -106,7 +123,7 @@ add_library(sdl_ttf ${DEP_LIB_TYPE}
 
 target_include_directories(sdl_ttf PUBLIC
   ${SDLTTF_DIR}/
-  ${SDL_DIR}/include/SDL
+  ${SDL_INCLUDE_DIR}/
 )
 
 target_link_directories(sdl_ttf PRIVATE ${SDL_DIR}/lib)
@@ -127,7 +144,7 @@ add_library(sdl_gfx ${DEP_LIB_TYPE}
 )
 
 target_include_directories(sdl_gfx PUBLIC ${SDLGFX_DIR}
-  ${SDL_DIR}/include/SDL
+  ${SDL_INCLUDE_DIR}/
 )
 target_link_directories(sdl_gfx PRIVATE ${SDL_DIR}/lib)
 target_link_libraries(sdl_gfx PRIVATE SDL)
@@ -159,7 +176,7 @@ add_library(sdl_image ${DEP_LIB_TYPE}
 )
 
 target_include_directories(sdl_image PUBLIC ${SDLIMAGE_DIR}
-  ${SDL_DIR}/include/SDL/
+  ${SDL_INCLUDE_DIR}/
 )
 
 target_compile_definitions(sdl_image PRIVATE LOAD_PNG)
@@ -203,7 +220,7 @@ add_library(sdl_mixer ${DEP_LIB_TYPE}
 )
 
 target_include_directories(sdl_mixer PUBLIC ${SDLMIXER_DIR}
-  ${SDL_DIR}/include/SDL/
+  ${SDL_INCLUDE_DIR}/
 )
 
 target_link_directories(sdl_mixer PRIVATE ${SDL_DIR}/lib)

@@ -12,6 +12,8 @@ _deps
 CMakeUserPresets.json
 cmake
 build
-Release
-Debug
+release-linux
+release-win
+debug-linux
+debug-win
 .ccls-cache/
